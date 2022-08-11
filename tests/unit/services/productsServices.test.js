@@ -1,16 +1,15 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
 const productsModels = require('../../../models/productsModels');
+const productsServices = require('../../../services/productsServices');
 
 describe('Testa o funcionamento dos productsModels', () => {
   describe('Testa getAllProducts, quando são listados todos os produtos do banco de dados', () => {
     const allProducts = [
-      [
         { id: 1, name: 'Martelo de Thor' },
         { id: 2, name: 'Traje de encolhimento' },
         { id: 3, name: 'Escudo do Capitão América' },
-      ],
-    ];
+      ];
 
     before(async () => {
       sinon.stub(productsModels, 'getAllProducts').resolves(allProducts);
@@ -25,7 +24,7 @@ describe('Testa o funcionamento dos productsModels', () => {
 
       expect(response).to.be.an('array');
     });
-    
+
     it('Testa se os produtos retornados estão ordenados por Id', async () => {
       const response = await productsServices.getAllProducts();
 
