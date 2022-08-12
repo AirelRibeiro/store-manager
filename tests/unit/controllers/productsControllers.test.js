@@ -134,43 +134,43 @@ describe('Testa o funcionamento de productsControllers', () => {
     });
   });
 
-  // describe('Testa insertProduct', () => {
-  //   describe('Testa insertProduct quando um name válido é passado', () => {
-  //     const insertedProduct = { id: 4, name: 'Lævateinn' };
+  describe('Testa insertProduct', () => {
+    describe('Testa insertProduct quando um name válido é passado', () => {
+      const insertedProduct = { id: 4, name: 'Lævateinn' };
 
-  //     before(async () => {
-  //       sinon.stub(productsServices, 'insertProduct').resolves(insertedProduct);
-  //     });
+      before(async () => {
+        sinon.stub(productsServices, 'insertProduct').resolves(insertedProduct);
+      });
 
-  //     after(async () => {
-  //       productsServices.insertProduct.restore();
-  //     });
+      after(async () => {
+        productsServices.insertProduct.restore();
+      });
     
-  //     it('Testa se o status de retorno é 201', async () => {
-  //       const req = {};
-  //       const res = {};
+      it('Testa se o status de retorno é 201', async () => {
+        const req = {};
+        const res = {};
 
-  //       req.body = { name: 'Lævateinn' };
-  //       res.status = sinon.stub().returns(res);
-  //       res.json = sinon.stub().returns();
+        req.body = { name: 'Lævateinn' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
 
-  //       await productsControllers.insertProduct(req, res);
+        await productsControllers.insertProduct(req, res);
 
-  //       expect(res.status.calledWith(201)).to.be.true;
-  //     });
+        expect(res.status.calledWith(201)).to.be.true;
+      });
 
-  //     it('Testa se o o json é chamado com o produto inserido', async () => {
-  //       const req = {};
-  //       const res = {};
+      it('Testa se o o json é chamado com o produto inserido', async () => {
+        const req = {};
+        const res = {};
       
-  //       req.body = { name: 'Lævateinn' };
-  //       res.status = sinon.stub().returns(res);
-  //       res.json = sinon.stub().returns();
+        req.body = { name: 'Lævateinn' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
 
-  //       await productsControllers.insertProduct(req, res);
+        await productsControllers.insertProduct(req, res);
 
-  //       expect(res.json.calledWith(insertedProduct)).to.be.true;
-  //     });
-  //   });
-  // });
+        expect(res.json.calledWith(insertedProduct)).to.be.true;
+      });
+    });
+  });
 });
