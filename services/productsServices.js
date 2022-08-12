@@ -18,8 +18,8 @@ const productsServices = {
     return product;
   },
 
-  insertProduct: async ({ name }) => {
-    const insertedProduct = await productsModels.insertProduct({ name });
+  insertProduct: async (name) => {
+    const insertedProduct = await productsModels.insertProduct(name);
 
     return insertedProduct;
   },
