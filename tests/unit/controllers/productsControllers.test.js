@@ -266,4 +266,80 @@ const productsControllers = require('../../../controllers/productsControllers');
       });
     });
   });
-  
+
+  describe('Testa deleteProduct de productsControllers', () => {
+    describe('Testa deleteProduct quando um id válido é passado', () => {
+      before(async () => {
+        sinon.stub(productsServices, 'deleteProduct').resolves(true);
+      });
+
+      after(async () => {
+        productsServices.deleteProduct.restore();
+      });
+    
+      it('Testa se o status de retorno é 204', async () => {
+        const req = {};
+        const res = {};
+
+        req.params = { id: '1' };
+        res.status = sinon.stub().returns(res);
+        res.end = sinon.stub().returns();
+
+        await productsControllers.deleteProduct(req, res);
+
+        expect(res.status.calledWith(204)).to.be.true;
+      });
+    });
+
+    describe('Testa updateProduct quando um id inválido é passado', () => {
+      const errorMessage = { message: 'Product not found' };
+
+      before(async () => {
+        sinon.stub(productsServices, 'deleteProduct').resolves(errorMessage);
+      });
+
+      after(async () => {
+        productsServices.deleteProduct.restore();
+      });
+    
+      it('Testa se o status de retorno é 404', async () => {
+        const req = {};
+        const res = {};
+        const next = (err) => {
+          if (err.message) {
+            return res.status(err.code).json({ message: err.message });
+          }
+          return res.status(500).json({ message: 'Erro no servidor' });
+        }
+
+        req.body = { name: 'Lævateinn' };
+        req.params = { id: '50' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        await productsControllers.deleteProduct(req, res, next);
+
+        expect(res.status.calledWith(404)).to.be.true;
+      });
+
+      it('Testa se o o json é chamado com o produto inserido', async () => {
+        const req = {};
+        const res = {};
+        const next = (err) => {
+          if (err.message) {
+            return res.status(err.code).json({ message: err.message });
+          }
+          return res.status(500).json({ message: 'Erro no servidor' });
+        }
+      
+        req.body = { name: 'Lævateinn' };
+        req.params = { id: '1' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        await productsControllers.deleteProduct(req, res, next);
+
+        expect(res.json.calledWith(errorMessage)).to.be.true;
+      });
+    });
+  });
