@@ -111,7 +111,7 @@ describe('Testa o funcionamento dos productsModels', () => {
       });
 
       it('Testa se o objeto contém "name is required"', async () => {
-        const response = await productsServices.insertProduct({ name: '' });
+        const response = await productsServices.insertProduct({});
 
         expect(response).to.be.deep.equal({ message: '"name" is required' });
       });
@@ -142,7 +142,7 @@ describe('Testa o funcionamento dos productsModels', () => {
     });
 
     describe('Testa se, quando um name válido é passado, retorna o produto inserido', () => {
-      const insertedProduct = [{insertId: 4}];
+      const insertedProduct = { id: 4, name: 'Lævateinn' };
 
       before(async () => {
         sinon.stub(productsModels, 'insertProduct').resolves(insertedProduct);
@@ -151,7 +151,7 @@ describe('Testa o funcionamento dos productsModels', () => {
       after(async () => {
         productsModels.insertProduct.restore();
       });
-      
+
       it('Testa se um objeto é retornado', async () => {
         const response = await productsServices.insertProduct({ name: 'Lævateinn' });
 
