@@ -173,4 +173,46 @@ describe('Testa o funcionamento de productsControllers', () => {
       });
     });
   });
+
+  describe('Testa updateProduct', () => {
+    describe('Testa updateProduct quando um name válido é passado', () => {
+      const updatedProduct = { id: 1, name: 'Lævateinn' };
+
+      before(async () => {
+        sinon.stub(productsServices, 'updateProduct').resolves(updatedProduct);
+      });
+
+      after(async () => {
+        productsServices.updateProduct.restore();
+      });
+    
+      it('Testa se o status de retorno é 201', async () => {
+        const req = {};
+        const res = {};
+
+        req.body = { name: 'Lævateinn' };
+        req.params = { id: '1' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        await productsControllers.updateProduct(req, res);
+
+        expect(res.status.calledWith(201)).to.be.true;
+      });
+
+      it('Testa se o o json é chamado com o produto inserido', async () => {
+        const req = {};
+        const res = {};
+      
+        req.body = { name: 'Lævateinn' };
+        req.params = { id: '1' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        await productsControllers.updateProduct(req, res);
+
+        expect(res.json.calledWith(updatedProduct)).to.be.true;
+      });
+    });
+  });
 });
