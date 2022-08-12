@@ -30,6 +30,7 @@ const productsControllers = {
     const { id } = req.params;
 
     const updatedProduct = await productsServices.updateProduct({ id, name });
+    console.log('🚀 ~ file: productsControllers.js ~ line 33 ~ updateProduct: ~ updatedProduct', updatedProduct);
 
     if (updatedProduct.message) {
       return next({ message: updatedProduct.message, code: 404 });
