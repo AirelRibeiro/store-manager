@@ -125,7 +125,7 @@ describe('Testa o funcionamento dos productsModels', () => {
     });
     
     it('Testa se os dados do produto atualizado são retornados corretamente', async () => {
-      const response = await productsModels.updateProduct('Lævateinn');
+      const response = await productsModels.updateProduct({ id: '1', name: 'Lævateinn'});
 
         expect(response).to.be.deep.equal({ id: '1', name: 'Lævateinn'});
     });
