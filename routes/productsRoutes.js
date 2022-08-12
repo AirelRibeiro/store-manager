@@ -8,7 +8,7 @@ productsRoutes.get('/:id', productsControllers.getById);
 
 productsRoutes.put('/:id', validateName, productsControllers.updateProduct);
 
-productsRoutes.delete('/:id', validateName, productsControllers.deleteProduct);
+productsRoutes.delete('/:id', productsControllers.deleteProduct);
 
 productsRoutes.get('/', productsControllers.getAllProducts);
 
