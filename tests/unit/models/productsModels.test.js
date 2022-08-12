@@ -96,13 +96,13 @@ describe('Testa o funcionamento dos productsModels', () => {
       });
     
     it('Testa se o array retornado não está vazio', async () => {
-      const response = await productsModels.insertProduct({ name: 'Lævateinn' });
+      const response = await productsModels.insertProduct('Lævateinn');
 
         expect(response).to.not.be.empty;
     });
     
     it('Testa se os dados do produto inserido são retornados corretamente', async () => {
-      const response = await productsModels.insertProduct({ name: 'Lævateinn' });
+      const response = await productsModels.insertProduct('Lævateinn');
 
         expect(response).to.be.deep.equal({ id: 4, name: 'Lævateinn' });
     });
