@@ -20,7 +20,7 @@ const productsServices = {
   },
 
   insertProduct: async ({ name }) => {
-    const validName = await productsValidations.validName(name);
+    const validName = await productsValidations.validName.validate(name);
 
     if (validName.error) {
       return { message: validName.error.details[0].message };
