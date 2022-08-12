@@ -24,15 +24,12 @@ const productsModels = {
     return { id: insertId, name };
   },
 
-  updateProduct: async (id, name) => {
-     await connection.execute(
+  updateProduct: (id, name) => connection.execute(
        `UPDATE StoreManager.products
           SET name = ?
           WHERE id = ?;`,
        [name, id],
-     );
-      return { id, name };
-  },
+     ).then(() => ({ id, name })),
 };
 
 module.exports = productsModels;
