@@ -25,9 +25,9 @@ const productsServices = {
   },
 
   updateProduct: async ({ id, name }) => {
-    const [product] = await productsModels.getById(id);
+    const product = await productsModels.getById(id);
 
-    if (!product) {
+    if (product.length === 0) {
       // throw new Error('Product not found');
       return { message: 'Product not found' };
     }
