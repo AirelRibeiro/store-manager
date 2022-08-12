@@ -142,5 +142,29 @@ describe('Testa o funcionamento dos productsServices', () => {
         expect(response).to.be.deep.equal({ id: 1, name: 'Lævateinn' });
       });
     });
+      
+    describe('Testa se, quando um id inválido é passado, retorna um erro', () => {
+      const errorMessage = { message: 'Product not found' };
+
+      before(async () => {
+        sinon.stub(productsModels, 'updateProduct').resolves(errorMessage);
+    });
+
+      after(async () => {
+        productsModels.updateProduct.restore();
+      });
+
+      it('Testa se um objeto é retornado', async () => {
+        const response = await productsServices.updateProduct({ id: 50, name: 'Lævateinn' });
+
+        expect(response).to.be.an('object');
+      });
+
+      it('Testa se o objeto contém a mensagem de erro correta', async () => {
+        const response = await productsServices.updateProduct({ id: 50, name: 'Lævateinn' });
+
+        expect(response).to.be.deep.equal({ message: 'Product not found' });
+      });
+    });
   });
 });
