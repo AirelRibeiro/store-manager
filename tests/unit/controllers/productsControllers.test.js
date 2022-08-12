@@ -3,8 +3,7 @@ const { expect } = require('chai');
 const productsServices = require('../../../services/productsServices');
 const productsControllers = require('../../../controllers/productsControllers');
 
-describe('Testa o funcionamento de productsControllers', () => {
-  describe('Testa getAllProducts quando são retornados todos os produtos', () => {
+  describe('Testa getAllProducts de productsControllers quando são retornados todos os produtos', () => {
     const allProducts = [
         { id: 1, name: 'Martelo de Thor' },
         { id: 2, name: 'Traje de encolhimento' },
@@ -44,7 +43,7 @@ describe('Testa o funcionamento de productsControllers', () => {
     });
   });
 
-  describe('Testa getById', () => {
+  describe('Testa getById de productsControllers', () => {
     describe('Testa getById quando o id fornecido não existe no banco de dados', () => {
       const errorMessage = { message: 'Product not found' };
 
@@ -134,7 +133,7 @@ describe('Testa o funcionamento de productsControllers', () => {
     });
   });
 
-  describe('Testa insertProduct', () => {
+    describe('Testa insertProduct de productsControllers', () => {
     describe('Testa insertProduct quando um name válido é passado', () => {
       const insertedProduct = { id: 4, name: 'Lævateinn' };
 
@@ -172,9 +171,9 @@ describe('Testa o funcionamento de productsControllers', () => {
         expect(res.json.calledWith(insertedProduct)).to.be.true;
       });
     });
-  });
+    });
 
-  describe('Testa updateProduct', () => {
+  describe('Testa updateProduct de productsControllers', () => {
     describe('Testa updateProduct quando um id válido é passado', () => {
       const updatedProduct = { id: 1, name: 'Lævateinn' };
 
@@ -226,7 +225,7 @@ describe('Testa o funcionamento de productsControllers', () => {
         productsServices.updateProduct.restore();
       });
     
-      it('Testa se o status de retorno é 200', async () => {
+      it('Testa se o status de retorno é 404', async () => {
         const req = {};
         const res = {};
         const next = (err) => {
@@ -267,4 +266,4 @@ describe('Testa o funcionamento de productsControllers', () => {
       });
     });
   });
-});
+  
