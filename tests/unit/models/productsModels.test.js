@@ -130,4 +130,20 @@ describe('Testa o funcionamento dos productsModels', () => {
         expect(response).to.be.deep.equal({ id: '1', name: 'Lævateinn'});
     });
   });
+
+  describe('Testa deleteProduct que exclui produto no banco de dados', () => {
+      before(async () => {
+        sinon.stub(connection, 'execute').resolves(true);
+    });
+
+      after(async () => {
+        connection.execute.restore();
+      });
+    
+    it('Testa se o retorno é um boolean', async () => {
+      const response = await productsModels.deleteProduct('1', 'Lævateinn');
+
+        expect(response).to.be.true;
+    });
+  });
 });
