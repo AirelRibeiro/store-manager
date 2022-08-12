@@ -166,5 +166,49 @@ describe('Testa o funcionamento dos productsServices', () => {
         expect(response).to.be.deep.equal({ message: 'Product not found' });
       });
     });
+    });
+  
+  describe('Testa função deleteProduct', () => {
+    describe('Testa se, quando um id inválido é passado, retorna um erro', () => {
+      const errorMessage = { message: 'Product not found' };
+
+      before(async () => {
+        sinon.stub(productsModels, 'deleteProduct').resolves(errorMessage);
+    });
+
+      after(async () => {
+        productsModels.deleteProduct.restore();
+      });
+
+      it('Testa se um objeto é retornado', async () => {
+        const response = await productsServices.deleteProduct('50');
+
+        expect(response).to.be.an('object');
+      });
+
+      it('Testa se o objeto contém a mensagem de erro correta', async () => {
+        const response = await productsServices.deleteProduct('50');
+
+        expect(response).to.be.deep.equal({ message: 'Product not found' });
+      });
+    });
+  });
+
+    describe('Testa função deleteProduct', () => {
+    describe('Testa se, quando um id válido é passado o retorno é correto', () => {
+      before(async () => {
+        sinon.stub(productsModels, 'deleteProduct').resolves(true);
+    });
+
+      after(async () => {
+        productsModels.deleteProduct.restore();
+      });
+
+      it('Testa se um true é retornado', async () => {
+        const response = await productsServices.deleteProduct('1');
+
+        expect(response).to.be.true;
+      });
+    });
   });
 });
