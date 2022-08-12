@@ -18,14 +18,13 @@ const productsModels = {
 
   insertProduct: async (name) => {
     const [{ insertId }] = await connection.execute(
-      `INSERT INTO StoreManager.products (name)
-        VALUES (?)`,
+      'INSERT INTO StoreManager.products (name) VALUES (?);',
       [name],
     );
     return { id: insertId, name };
   },
 
-  updateProduct: async ({ id, name }) => {
+  updateProduct: async (id, name) => {
      await connection.execute(
        `UPDATE StoreManager.products
           SET name = ?
