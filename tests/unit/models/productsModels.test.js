@@ -108,4 +108,26 @@ describe('Testa o funcionamento dos productsModels', () => {
     });
 
   });
+
+  describe('Testa updateProduct que atualiza dados de produto no banco de dados', () => {
+      before(async () => {
+        sinon.stub(connection, 'execute').resolves(true);
+    });
+
+      after(async () => {
+        connection.execute.restore();
+      });
+    
+    it('Testa se o array retornado não está vazio', async () => {
+      const response = await productsModels.updateProduct({ id: '1', name: 'Lævateinn'});
+
+        expect(response).to.not.be.empty;
+    });
+    
+    it('Testa se os dados do produto atualizado são retornados corretamente', async () => {
+      const response = await productsModels.updateProduct('Lævateinn');
+
+        expect(response).to.be.deep.equal({ id: '1', name: 'Lævateinn'});
+    });
+  });
 });
