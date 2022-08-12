@@ -175,7 +175,7 @@ describe('Testa o funcionamento de productsControllers', () => {
   });
 
   describe('Testa updateProduct', () => {
-    describe('Testa updateProduct quando um name válido é passado', () => {
+    describe('Testa updateProduct quando um id válido é passado', () => {
       const updatedProduct = { id: 1, name: 'Lævateinn' };
 
       before(async () => {
@@ -186,7 +186,7 @@ describe('Testa o funcionamento de productsControllers', () => {
         productsServices.updateProduct.restore();
       });
     
-      it('Testa se o status de retorno é 201', async () => {
+      it('Testa se o status de retorno é 200', async () => {
         const req = {};
         const res = {};
 
@@ -197,7 +197,7 @@ describe('Testa o funcionamento de productsControllers', () => {
 
         await productsControllers.updateProduct(req, res);
 
-        expect(res.status.calledWith(201)).to.be.true;
+        expect(res.status.calledWith(200)).to.be.true;
       });
 
       it('Testa se o o json é chamado com o produto inserido', async () => {
@@ -212,6 +212,58 @@ describe('Testa o funcionamento de productsControllers', () => {
         await productsControllers.updateProduct(req, res);
 
         expect(res.json.calledWith(updatedProduct)).to.be.true;
+      });
+    });
+
+        describe('Testa updateProduct quando um id inválido é passado', () => {
+      const errorMessage = { message: 'Product not found' };
+
+      before(async () => {
+        sinon.stub(productsServices, 'updateProduct').resolves(errorMessage);
+      });
+
+      after(async () => {
+        productsServices.updateProduct.restore();
+      });
+    
+      it('Testa se o status de retorno é 200', async () => {
+        const req = {};
+        const res = {};
+        const next = (err) => {
+          if (err.message) {
+            return res.status(err.code).json({ message: err.message });
+          }
+          return res.status(500).json({ message: 'Erro no servidor' });
+        }
+
+        req.body = { name: 'Lævateinn' };
+        req.params = { id: '50' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        await productsControllers.updateProduct(req, res, next);
+
+        expect(res.status.calledWith(404)).to.be.true;
+      });
+
+      it('Testa se o o json é chamado com o produto inserido', async () => {
+        const req = {};
+        const res = {};
+        const next = (err) => {
+          if (err.message) {
+            return res.status(err.code).json({ message: err.message });
+          }
+          return res.status(500).json({ message: 'Erro no servidor' });
+        }
+      
+        req.body = { name: 'Lævateinn' };
+        req.params = { id: '1' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        await productsControllers.updateProduct(req, res, next);
+
+        expect(res.json.calledWith(errorMessage)).to.be.true;
       });
     });
   });
