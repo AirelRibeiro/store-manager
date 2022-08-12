@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const productsModels = require('../../../models/productsModels');
 const productsServices = require('../../../services/productsServices');
 
-describe('Testa o funcionamento dos productsModels', () => {
+describe('Testa o funcionamento dos productsServices', () => {
   describe('Testa getAllProducts', () => {
     describe('Testa getAllProducts, quando são listados todos os produtos do banco de dados', () => {
       const allProducts = [
@@ -114,6 +114,32 @@ describe('Testa o funcionamento dos productsModels', () => {
         const response = await productsServices.insertProduct({ name: 'Lævateinn' });
 
         expect(response).to.be.deep.equal({ id: 4, name: 'Lævateinn' });
+      });
+    });
+  });
+
+    describe('Testa função updateProduct', () => {
+    describe('Testa se, quando um name válido é passado, retorna o produto inserido', () => {
+      const updatedProduct = { id: 1, name: 'Lævateinn' };
+
+      before(async () => {
+        sinon.stub(productsModels, 'updateProduct').resolves(updatedProduct);
+    });
+
+      after(async () => {
+        productsModels.updateProduct.restore();
+      });
+
+      it('Testa se um objeto é retornado', async () => {
+        const response = await productsServices.updateProduct({ id: 1, name: 'Lævateinn' });
+
+        expect(response).to.be.an('object');
+      });
+
+      it('Testa se o objeto contém informações do produto inserido', async () => {
+        const response = await productsServices.updateProduct({ id: 1, name: 'Lævateinn' });
+
+        expect(response).to.be.deep.equal({ id: 1, name: 'Lævateinn' });
       });
     });
   });
