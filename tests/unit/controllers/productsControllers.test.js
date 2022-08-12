@@ -215,7 +215,7 @@ describe('Testa o funcionamento de productsControllers', () => {
       });
     });
 
-        describe('Testa updateProduct quando um id inválido é passado', () => {
+    describe('Testa updateProduct quando um id inválido é passado', () => {
       const errorMessage = { message: 'Product not found' };
 
       before(async () => {
