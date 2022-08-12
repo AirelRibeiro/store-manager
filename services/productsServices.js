@@ -1,5 +1,4 @@
 const productsModels = require('../models/productsModels');
-const productsValidations = require('./validations/productsValidations');
 
 const productsServices = {
   getAllProducts: async () => {
