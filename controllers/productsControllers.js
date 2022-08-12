@@ -18,9 +18,9 @@ const productsControllers = {
     return res.status(200).json(product);
   },
 
-  insertProduct: async (req, res) => {
+  insertProduct: async (req, res, _next) => {
     const { name } = req.body;
-    const insertedProduct = await productsControllers.insertProduct({ name });
+    const insertedProduct = await productsServices.insertProduct(name);
 
     return res.status(201).json(insertedProduct);
   },
