@@ -23,6 +23,18 @@ const productsServices = {
 
     return insertedProduct;
   },
+
+  updateProduct: async ({ id, name }) => {
+    const [product] = await productsModels.getById(id);
+
+    if (!product) {
+      // throw new Error('Product not found');
+      return { message: 'Product not found' };
+    }
+    const updatedProduct = await productsModels.updateProduct(id, name);
+
+    return updatedProduct;
+  },
 };
 
 module.exports = productsServices;
