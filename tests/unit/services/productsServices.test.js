@@ -88,5 +88,17 @@ describe('Testa o funcionamento dos productsModels', () => {
     });
   });
 
+  describe('Testa se, quando um nome inválido é passado, um erro é retornado', () => {
+    it('Testa se quando o name não é fornecido, um objeto é retornado', async () => {
+      const response = await productsServices.insertProduct({ name: '' });
 
+      expect(response).to.be.an('object');
+    });
+
+    it('Testa se quando o name não é fornecido o objeto contém "name is required"', async () => {
+      const response = await productsServices.insertProduct({ name: '' });
+
+      expect(response).to.be.deep.equal({ message: '"name" is required' });
+    });
+  });
 });
