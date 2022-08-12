@@ -93,54 +93,6 @@ describe('Testa o funcionamento dos productsModels', () => {
   });
 
   describe('Testa função insertProduct', () => {
-    describe('Testa se, quando name não é passado, um erro é retornado', () => {
-      const insertedProduct = [{insertId: 4}];
-
-      before(async () => {
-        sinon.stub(productsModels, 'insertProduct').resolves(insertedProduct);
-    });
-
-      after(async () => {
-        productsModels.insertProduct.restore();
-      });
-
-      it('Testa se um objeto é retornado', async () => {
-        const response = await productsServices.insertProduct({ name: '' });
-
-        expect(response).to.be.an('object');
-      });
-
-      it('Testa se o objeto contém "name is required"', async () => {
-        const response = await productsServices.insertProduct({});
-
-        expect(response).to.be.deep.equal({ message: '"name" is required' });
-      });
-    });
-
-    describe('Testa se, quando name menor que 5 caracteres é passado, um erro é retornado', () => {
-      const insertedProduct = [{insertId: 4}];
-
-      before(async () => {
-        sinon.stub(productsModels, 'insertProduct').resolves(insertedProduct);
-    });
-
-      after(async () => {
-        productsModels.insertProduct.restore();
-      });
-
-      it('Testa se um objeto é retornado', async () => {
-        const response = await productsServices.insertProduct({ name: 'Abc' });
-
-        expect(response).to.be.an('object');
-      });
-
-      it('Testa se o objeto contém "name length must be at least 5 characters long"', async () => {
-        const response = await productsServices.insertProduct({ name: 'Abc' });
-
-        expect(response).to.be.deep.equal({ message: '"name" length must be at least 5 characters long' });
-      });
-    });
-
     describe('Testa se, quando um name válido é passado, retorna o produto inserido', () => {
       const insertedProduct = { id: 4, name: 'Lævateinn' };
 
