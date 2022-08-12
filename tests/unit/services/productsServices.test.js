@@ -3,8 +3,7 @@ const { expect } = require('chai');
 const productsModels = require('../../../models/productsModels');
 const productsServices = require('../../../services/productsServices');
 
-describe('Testa o funcionamento dos productsServices', () => {
-  describe('Testa getAllProducts', () => {
+  describe('Testa getAllProducts de productsServices', () => {
     describe('Testa getAllProducts, quando são listados todos os produtos do banco de dados', () => {
       const allProducts = [
         { id: 1, name: 'Martelo de Thor' },
@@ -43,8 +42,8 @@ describe('Testa o funcionamento dos productsServices', () => {
       });
     });
   });
-  
-  describe('Testa getById', () => {
+
+describe('Testa getById de productsServices', () => {
     describe('Testa getById se o id passado é de um produto que existe no banco de dados', async () => {
       const product = [{ id: 1, name: 'Martelo de Thor' }];
 
@@ -90,9 +89,9 @@ describe('Testa o funcionamento dos productsServices', () => {
         expect(response).to.be.deep.equal({ message: 'Product not found' });
       });
     });
-  });
+  });    
 
-  describe('Testa função insertProduct', () => {
+describe('Testa função insertProduct de productsServices', () => {
     describe('Testa se, quando um name válido é passado, retorna o produto inserido', () => {
       const insertedProduct = { id: 4, name: 'Lævateinn' };
 
@@ -118,8 +117,8 @@ describe('Testa o funcionamento dos productsServices', () => {
     });
   });
 
-    describe('Testa função updateProduct', () => {
-    describe('Testa se, quando um name válido é passado, retorna o produto inserido', () => {
+describe('Testa função updateProduct de productsServices', () => {
+      describe('Testa se, quando um name válido é passado, retorna o produto inserido', () => {
       const updatedProduct = { id: 1, name: 'Lævateinn' };
 
       before(async () => {
@@ -166,9 +165,9 @@ describe('Testa o funcionamento dos productsServices', () => {
         expect(response).to.be.deep.equal({ message: 'Product not found' });
       });
     });
-    });
-  
-  describe('Testa função deleteProduct', () => {
+  });
+
+describe('Testa função deleteProduct de productsServices', () => {
     describe('Testa se, quando um id inválido é passado, retorna um erro', () => {
       const errorMessage = { message: 'Product not found' };
 
@@ -192,9 +191,7 @@ describe('Testa o funcionamento dos productsServices', () => {
         expect(response).to.be.deep.equal({ message: 'Product not found' });
       });
     });
-  });
 
-    describe('Testa função deleteProduct', () => {
     describe('Testa se, quando um id válido é passado o retorno é correto', () => {
       before(async () => {
         sinon.stub(productsModels, 'deleteProduct').resolves(true);
@@ -211,4 +208,3 @@ describe('Testa o funcionamento dos productsServices', () => {
       });
     });
   });
-});
