@@ -25,13 +25,17 @@ const productsControllers = {
     return res.status(201).json(insertedProduct);
   },
 
-  updateProduct: async (req, res, _next) => {
+  updateProduct: async (req, res, next) => {
     const { name } = req.body;
     const { id } = req.params;
-    
-    const insertedProduct = await productsServices.updateProduct({ id, name });
 
-    return res.status(201).json(insertedProduct);
+    const updatedProduct = await productsServices.updateProduct({ id, name });
+
+    if (updatedProduct.message) {
+      return next({ message: updatedProduct.message, code: 404 });
+    }
+
+    return res.status(200).json(updatedProduct);
   },
 };
 
