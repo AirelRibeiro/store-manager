@@ -25,11 +25,17 @@ const productsModels = {
   },
 
   updateProduct: (id, name) => connection.execute(
-       `UPDATE StoreManager.products
-          SET name = ?
-          WHERE id = ?;`,
+    `UPDATE StoreManager.products
+      SET name = ?
+      WHERE id = ?;`,
        [name, id],
-     ).then(() => ({ id, name })),
+  ).then(() => ({ id, name })),
+  
+  deleteProduct: (id) => connection.execute(
+    `DELETE FROM StoreManager.products
+      WHERE id = ?;`,
+    [id],
+  ).then(() => true),
 };
 
 module.exports = productsModels;
