@@ -1,6 +1,6 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
-const validateName = require('../../../middlewares/validationMiddlewares');
+const validationMiddlewares = require('../../../middlewares/validationMiddlewares');
 
 describe('Testa validateName', () => {
     describe('Testa validateName quando name não é oferecido', () => {
@@ -18,7 +18,7 @@ describe('Testa validateName', () => {
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
 
-        validateName(req, res, next);
+        validationMiddlewares.validateName(req, res, next);
 
         expect(res.status.calledWith(400)).to.be.true;
       });
@@ -37,7 +37,7 @@ describe('Testa validateName', () => {
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
 
-        validateName(req, res, next);
+        validationMiddlewares.validateName(req, res, next);
 
         expect(res.json.calledWith({ message: '"name" is required' })).to.be.true;
       });
@@ -58,7 +58,7 @@ describe('Testa validateName', () => {
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
 
-        validateName(req, res, next);
+        validationMiddlewares.validateName(req, res, next);
 
         expect(res.status.calledWith(422)).to.be.true;
       });
@@ -77,7 +77,7 @@ describe('Testa validateName', () => {
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
 
-        validateName(req, res, next);
+        validationMiddlewares.validateName(req, res, next);
 
         expect(res.json.calledWith({ message: '"name" length must be at least 5 characters long' })).to.be.true;
       });
