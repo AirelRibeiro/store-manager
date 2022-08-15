@@ -175,17 +175,39 @@ describe('Testa getSalesById de salesModels', () => {
 });
 
 describe('Testa deleteSale que exclui sale no banco de dados', () => {
-      before(async () => {
-        sinon.stub(connection, 'execute').resolves(true);
-    });
-
-      after(async () => {
-        connection.execute.restore();
-      });
-    
-    it('Testa se o retorno é um boolean', async () => {
-      const response = await salesModels.deleteSale('1');
-
-        expect(response).to.be.true;
-    });
+  before(async () => {
+    sinon.stub(connection, 'execute').resolves(true);
   });
+
+  after(async () => {
+    connection.execute.restore();
+  });
+    
+  it('Testa se o retorno é um boolean', async () => {
+    const response = await salesModels.deleteSale('1');
+
+    expect(response).to.be.true;
+  });
+});
+  
+describe('Testa updateSale que atualiza dados da sale em sales_products', () => {
+  before(async () => {
+    sinon.stub(connection, 'execute').resolves(true);
+  });
+
+  after(async () => {
+    connection.execute.restore();
+  });
+    
+  it('Testa se o array retornado não está vazio', async () => {
+    const response = await salesModels.updateSale('1', '1', '1');
+
+    expect(response).to.not.be.empty;
+  });
+    
+  it('Testa se os dados do produto atualizado são retornados corretamente', async () => {
+    const response = await salesModels.updateSale('1', '1', '1');
+
+    expect(response).to.be.deep.equal({ productId: '1', quantity: '1' });
+  });
+});
