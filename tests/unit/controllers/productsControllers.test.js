@@ -291,7 +291,7 @@ describe('Testa deleteProduct de productsControllers', () => {
     });
   });
 
-  describe('Testa updateProduct quando um id inválido é passado', () => {
+  describe('Testa deleteProduct quando um id inválido é passado', () => {
     const errorMessage = { message: 'Product not found' };
 
     before(async () => {
