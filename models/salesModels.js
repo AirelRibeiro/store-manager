@@ -22,7 +22,7 @@ const salesModels = {
         ON sp.sale_id = s.id
         ORDER BY saleID, productId;
     `);
-    
+
     return sales;
   },
 
@@ -42,10 +42,12 @@ const salesModels = {
   },
 
   deleteSale: (id) => connection.execute(
-    `DELETE FROM StoreManager.sales
-      WHERE id = ?;`,
+    'DELETE FROM StoreManager.sales_products WHERE sale_id = ?;',
     [id],
-  ).then(() => true),
+  ).then(() => connection.execute(
+    'DELETE FROM StoreManager.sales WHERE id = ?;',
+    [id],
+  )).then(() => true),
 };
 
 module.exports = salesModels;
