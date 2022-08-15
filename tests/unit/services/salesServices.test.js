@@ -205,12 +205,12 @@ describe('Testa função deleteSale de salesServices', () => {
 
       before(async () => {
         sinon.stub(salesModels, 'getSalesById').resolves([]);
-        sinon.stub(productsModels, 'deleteSale').resolves(errorMessage);
+        sinon.stub(salesModels, 'deleteSale').resolves(errorMessage);
     });
 
       after(async () => {
         salesModels.getSalesById.restore();
-        productsModels.deleteSale.restore();
+        salesModels.deleteSale.restore();
       });
 
       it('Testa se um objeto é retornado', async () => {

@@ -285,20 +285,6 @@ describe('Testa deleteSale de salesControllers', () => {
         await salesControllers.deleteSale(req, res);
 
         expect(res.status.calledWith(204)).to.be.true;
-        expect(res.end.called()).to.be.true;
-      });
-
-      it('Testa se o end é chamado', async () => {
-        const req = {};
-        const res = {};
-
-        req.params = { id: '1' };
-        res.status = sinon.stub().returns(res);
-        res.end = sinon.stub().returns();
-
-        await salesControllers.deleteSale(req, res);
-
-        expect(res.end.called()).to.be.true;
       });
     });
 
@@ -332,7 +318,7 @@ describe('Testa deleteSale de salesControllers', () => {
         expect(res.status.calledWith(404)).to.be.true;
       });
 
-      it('Testa se o o json é chamado com o produto inserido', async () => {
+      it('Testa se o o json é chamado com erro correto', async () => {
         const req = {};
         const res = {};
         const next = (err) => {
@@ -342,12 +328,11 @@ describe('Testa deleteSale de salesControllers', () => {
           return res.status(500).json({ message: 'Erro no servidor' });
         }
       
-        req.body = { name: 'Lævateinn' };
-        req.params = { id: '1' };
+        req.params = { id: '50' };
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
 
-        await salesControllers.deleteProduct(req, res, next);
+        await salesControllers.deleteSale(req, res, next);
 
         expect(res.json.calledWith(errorMessage)).to.be.true;
       });
