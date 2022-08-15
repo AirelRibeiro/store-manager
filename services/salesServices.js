@@ -18,6 +18,12 @@ const salesServices = {
     
     return { id: insertedId, itemsSold: insertedSales };
   },
+
+  getAllSales: async () => {
+    const sales = await salesModels.getAllSales();
+
+    return sales;
+  },
 };
 
 module.exports = salesServices;
