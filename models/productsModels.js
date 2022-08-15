@@ -36,6 +36,15 @@ const productsModels = {
       WHERE id = ?;`,
     [id],
   ).then(() => true),
+
+  searchByName: async (name) => {
+    const [result] = await connection.execute(
+      'SELECT * FROM StoreManager.products WHERE products.name LIKE ?;',
+      [`%${name}%`],
+    );
+
+    return result;
+  },
 };
 
 module.exports = productsModels;
