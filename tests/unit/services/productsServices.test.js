@@ -118,14 +118,16 @@ describe('Testa função insertProduct de productsServices', () => {
   });
 
 describe('Testa função updateProduct de productsServices', () => {
-      describe('Testa se, quando um name válido é passado, retorna o produto inserido', () => {
+      describe('Testa se, quando um id válido é passado, retorna o produto inserido', () => {
       const updatedProduct = { id: 1, name: 'Lævateinn' };
 
-      before(async () => {
+        before(async () => {
+        sinon.stub(productsModels, 'getById').resolves([{ id: 1, name: 'Lævateinn' }])
         sinon.stub(productsModels, 'updateProduct').resolves(updatedProduct);
     });
 
-      after(async () => {
+        after(async () => {
+        productsModels.getById.restore();
         productsModels.updateProduct.restore();
       });
 
@@ -194,10 +196,12 @@ describe('Testa função deleteProduct de productsServices', () => {
 
     describe('Testa se, quando um id válido é passado o retorno é correto', () => {
       before(async () => {
+        sinon.stub(productsModels, 'getById').resolves([{ id: 1, name: 'Martelo de Thor' }])
         sinon.stub(productsModels, 'deleteProduct').resolves(true);
     });
 
       after(async () => {
+        productsModels.getById.restore();
         productsModels.deleteProduct.restore();
       });
 
