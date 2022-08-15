@@ -56,16 +56,16 @@ describe('Testa o funcionamento de insertSalesProducts em salesModels', () => {
 describe('Testa o funcionamento de getAllSales em salesModels', () => {
   const result = [[
     {
-      "saleId": 1,
-      "date": "2021-09-09T04:54:29.000Z",
-      "productId": 1,
-      "quantity": 2
+      saleId: 1,
+      date: '2021-09-09T04:54:29.000Z',
+      productId: 1,
+      quantity: 2
     },
     {
-      "saleId": 1,
-      "date": "2021-09-09T04:54:54.000Z",
-      "productId": 2,
-      "quantity": 2
+      saleId: 1,
+      date: '2021-09-09T04:54:54.000Z',
+      productId: 2,
+      quantity: 2
     }
   ]];
 
@@ -103,3 +103,73 @@ describe('Testa o funcionamento de getAllSales em salesModels', () => {
       expect(response[1]['quantity']).to.be.equals(2);
     });
 });
+
+describe('Testa getSalesById de salesModels', () => {
+  describe('Testa getSalesById quando o id passado não existe no banco de dados', () => {
+    before(async () => {
+      sinon.stub(connection, 'execute').resolves([[]]);
+    });
+
+    after(async () => {
+      connection.execute.restore();
+    });
+    it('Testa se o retorno é um array', async () => {
+      const response = await salesModels.getSalesById(50);
+
+      expect(response).to.be.an('array');
+    });
+    it('Testa se o array retornado está vazio', async () => {
+       const response = await salesModels.getSalesById(50);
+
+      expect(response).to.be.an('array').that.is.empty;
+    });
+  });
+
+  describe('Testa getSalesById quando o id passado existe no banco de dados', () => {
+    const sales = [[
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 1,
+        quantity: 5
+    },
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 2,
+        quantity: 10
+    }
+]];
+
+      before(async () => {
+        sinon.stub(connection, 'execute').resolves(sales);
+    });
+
+      after(async () => {
+        connection.execute.restore();
+    });
+      it('Testa se o retorno é um array', async () => {
+        const response = await salesModels.getSalesById(1);
+
+        expect(response).to.be.an('array');
+    });
+      it('Testa se o array retornado contém informações das sales com o id fornecido', async () => {
+        const response = await salesModels.getSalesById(1);
+
+        expect(response).to.be.eql([
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 1,
+        quantity: 5
+    },
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 2,
+        quantity: 10
+    }
+]);
+    });
+  });
+})
