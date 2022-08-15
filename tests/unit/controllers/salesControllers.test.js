@@ -212,54 +212,144 @@ describe('Testa getSalesById de salesControllers', () => {
     });
   });
 
-    describe('Testa getSalesById quando o id fornecido existe no banco de dados', () => {
-      const sales = [
-    {
+  describe('Testa getSalesById quando o id fornecido existe no banco de dados', () => {
+    const sales = [
+      {
         saleID: 1,
         date: '2022-08-15T19:08:32.000Z',
         productId: 1,
         quantity: 5
-    },
-    {
+      },
+      {
         saleID: 1,
         date: '2022-08-15T19:08:32.000Z',
         productId: 2,
         quantity: 10
-    }
-];
+      }
+    ];
 
+    before(async () => {
+      sinon.stub(salesServices, 'getSalesById').resolves(sales);
+    });
+
+    after(async () => {
+      salesServices.getSalesById.restore();
+    });
+    
+    it('Testa se o status de retorno é 200', async () => {
+      const req = {};
+      const res = {}
+
+      req.params = { id: '1' }
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesControllers.getSalesById(req, res);
+
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Testa se o o json é chamado com um array contendo todos os produtos', async () => {
+      const req = {};
+      const res = {}
+
+      req.params = { id: '1' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesControllers.getSalesById(req, res);
+
+      expect(res.json.calledWith(sales)).to.be.true;
+    });
+  });
+});
+
+describe('Testa deleteSale de salesControllers', () => {
+    describe('Testa deleteSale quando um id válido é passado', () => {
       before(async () => {
-        sinon.stub(salesServices, 'getSalesById').resolves(sales);
+        sinon.stub(salesServices, 'deleteSale').resolves(true);
       });
 
       after(async () => {
-        salesServices.getSalesById.restore();
+        salesServices.deleteSale.restore();
       });
     
-      it('Testa se o status de retorno é 200', async () => {
+      it('Testa se o status de retorno é 204', async () => {
         const req = {};
-        const res = {}
+        const res = {};
 
-        req.params = { id: '1' }
+        req.params = { id: '1' };
+        res.status = sinon.stub().returns(res);
+        res.end = sinon.stub().returns();
+
+        await salesControllers.deleteSale(req, res);
+
+        expect(res.status.calledWith(204)).to.be.true;
+        expect(res.end.called()).to.be.true;
+      });
+
+      it('Testa se o end é chamado', async () => {
+        const req = {};
+        const res = {};
+
+        req.params = { id: '1' };
+        res.status = sinon.stub().returns(res);
+        res.end = sinon.stub().returns();
+
+        await salesControllers.deleteSale(req, res);
+
+        expect(res.end.called()).to.be.true;
+      });
+    });
+
+    describe('Testa deleteSale quando um id inválido é passado', () => {
+      const errorMessage = { message: 'Sale not found' };
+
+      before(async () => {
+        sinon.stub(salesServices, 'deleteSale').resolves(errorMessage);
+      });
+
+      after(async () => {
+        salesServices.deleteSale.restore();
+      });
+    
+      it('Testa se o status de retorno é 404', async () => {
+        const req = {};
+        const res = {};
+        const next = (err) => {
+          if (err.message) {
+            return res.status(err.code).json({ message: err.message });
+          }
+          return res.status(500).json({ message: 'Erro no servidor' });
+        }
+
+        req.params = { id: '50' };
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
 
-        await salesControllers.getSalesById(req, res);
+        await salesControllers.deleteSale(req, res, next);
 
-        expect(res.status.calledWith(200)).to.be.true;
+        expect(res.status.calledWith(404)).to.be.true;
       });
 
-      it('Testa se o o json é chamado com um array contendo todos os produtos', async () => {
+      it('Testa se o o json é chamado com o produto inserido', async () => {
         const req = {};
-        const res = {}
-
+        const res = {};
+        const next = (err) => {
+          if (err.message) {
+            return res.status(err.code).json({ message: err.message });
+          }
+          return res.status(500).json({ message: 'Erro no servidor' });
+        }
+      
+        req.body = { name: 'Lævateinn' };
         req.params = { id: '1' };
         res.status = sinon.stub().returns(res);
         res.json = sinon.stub().returns();
 
-        await salesControllers.getSalesById(req, res);
+        await salesControllers.deleteProduct(req, res, next);
 
-        expect(res.json.calledWith(sales)).to.be.true;
+        expect(res.json.calledWith(errorMessage)).to.be.true;
       });
     });
   });
