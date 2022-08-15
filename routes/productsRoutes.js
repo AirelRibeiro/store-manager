@@ -4,6 +4,8 @@ const validationMiddlewares = require('../middlewares/validationMiddlewares');
 
 const productsRoutes = express.Router();
 
+productsRoutes.get('/search', productsControllers.searchByName);
+
 productsRoutes.get('/:id', productsControllers.getById);
 
 productsRoutes.put('/:id', validationMiddlewares.validateName, productsControllers.updateProduct);
