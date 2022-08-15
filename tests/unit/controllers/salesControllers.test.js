@@ -93,22 +93,70 @@ describe('Testa insertSales de salesControllers', () => {
       });
 
     it('Testa se é retornado um objeto com as informações corretas', async () => {
-        const req = {};
-        const res = {};
-        const next = (err) => {
-          if (err.message) {
-            return res.status(err.code).json({ message: err.message });
-          }
-          return res.status(500).json({ message: 'Erro no servidor' });
+      const req = {};
+      const res = {};
+      const next = (err) => {
+        if (err.message) {
+          return res.status(err.code).json({ message: err.message });
         }
+        return res.status(500).json({ message: 'Erro no servidor' });
+      }
 
-        res.status = sinon.stub().returns(res);
-        res.json = sinon.stub().returns();
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
 
-        await salesControllers.insertSales(req, res);
+      await salesControllers.insertSales(req, res);
 
-        expect(res.json.calledWith({ id: 8, itemsSold: insertedSales })).to.be.true;
-      })
+      expect(res.json.calledWith({ id: 8, itemsSold: insertedSales })).to.be.true;
+    });
   });
 });
   
+describe('Testa getAllSales de salesControllers', () => {
+  const sales = [
+    {
+      "saleId": 1,
+      "date": "2021-09-09T04:54:29.000Z",
+      "productId": 1,
+      "quantity": 2
+    },
+    {
+      "saleId": 1,
+      "date": "2021-09-09T04:54:54.000Z",
+      "productId": 2,
+      "quantity": 2
+    }
+  ];
+
+  before(async () => {
+    sinon.stub(salesServices, 'getAllSales').resolves(sales);
+  });
+
+  after(async () => {
+    salesServices.getAllSales.restore();
+  });
+    
+  it('Testa se o status de retorno é 200', async () => {
+    const req = {};
+    const res = {}
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await salesControllers.getAllSales(req, res);
+
+    expect(res.status.calledWith(200)).to.be.true;
+  });
+  
+  it('Testa se o status de retorno é 200', async () => {
+    const req = {};
+    const res = {}
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await salesControllers.getAllSales(req, res);
+
+    expect(res.json.calledWith(sales)).to.be.true;
+  });
+});
