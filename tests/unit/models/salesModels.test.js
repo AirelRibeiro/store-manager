@@ -173,3 +173,19 @@ describe('Testa getSalesById de salesModels', () => {
     });
   });
 });
+
+describe('Testa deleteSale que exclui sale no banco de dados', () => {
+      before(async () => {
+        sinon.stub(connection, 'execute').resolves(true);
+    });
+
+      after(async () => {
+        connection.execute.restore();
+      });
+    
+    it('Testa se o retorno é um boolean', async () => {
+      const response = await salesModels.deleteSale('1');
+
+        expect(response).to.be.true;
+    });
+  });
