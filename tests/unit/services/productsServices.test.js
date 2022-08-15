@@ -122,7 +122,7 @@ describe('Testa função updateProduct de productsServices', () => {
     const updatedProduct = { id: 1, name: 'Lævateinn' };
 
     before(async () => {
-      sinon.stub(productsModels, 'getById').resolves([{ id: 1, name: 'Lævateinn' }])
+      sinon.stub(productsModels, 'getById').resolves([{ id: 1, name: 'Lævateinn' }]);
       sinon.stub(productsModels, 'updateProduct').resolves(updatedProduct);
     });
 
