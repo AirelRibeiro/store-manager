@@ -160,3 +160,106 @@ describe('Testa getAllSales de salesControllers', () => {
     expect(res.json.calledWith(sales)).to.be.true;
   });
 });
+
+describe('Testa getSalesById de salesControllers', () => {
+  describe('Testa getSalesById quando o id fornecido não existe no banco de dados', () => {
+    const errorMessage = { message: 'Sale not found' };
+
+    before(async () => {
+      sinon.stub(salesServices, 'getSalesById').resolves(errorMessage);
+    });
+
+    after(async () => {
+      salesServices.getSalesById.restore();
+    });
+    
+    it('Testa se o status de retorno é 404', async () => {
+      const req = {};
+      const res = {};
+      const next = (err) => {
+        if (err.message) {
+          return res.status(err.code).json({ message: err.message });
+        }
+        return res.status(500).json({ message: 'Erro no servidor' });
+      }
+
+      req.params = { id: '50' }
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesControllers.getSalesById(req, res, next);
+
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Testa se o o json é chamado com uma mensagem de erro', async () => {
+      const req = {};
+      const res = {};
+      const next = (err) => {
+        if (err.message) {
+          return res.status(err.code).json({ message: err.message });
+        }
+        return res.status(500).json({ message: 'Erro no servidor' });
+      }
+
+      req.params = { id: '50' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesControllers.getSalesById(req, res, next);
+
+      expect(res.json.calledWith(errorMessage)).to.be.true;
+    });
+  });
+
+    describe('Testa getSalesById quando o id fornecido existe no banco de dados', () => {
+      const sales = [
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 1,
+        quantity: 5
+    },
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 2,
+        quantity: 10
+    }
+];
+
+      before(async () => {
+        sinon.stub(salesServices, 'getSalesById').resolves(sales);
+      });
+
+      after(async () => {
+        salesServices.getSalesById.restore();
+      });
+    
+      it('Testa se o status de retorno é 200', async () => {
+        const req = {};
+        const res = {}
+
+        req.params = { id: '1' }
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        await salesControllers.getSalesById(req, res);
+
+        expect(res.status.calledWith(200)).to.be.true;
+      });
+
+      it('Testa se o o json é chamado com um array contendo todos os produtos', async () => {
+        const req = {};
+        const res = {}
+
+        req.params = { id: '1' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        await salesControllers.getSalesById(req, res);
+
+        expect(res.json.calledWith(sales)).to.be.true;
+      });
+    });
+  });
