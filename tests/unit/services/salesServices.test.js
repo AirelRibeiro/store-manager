@@ -138,3 +138,63 @@ describe('Testa getAllSales de salesServices', () => {
     });
   });
 });
+
+describe('Testa getSalesById de salesServices', () => {
+    describe('Testa getById se o id passado é de um produto que existe no banco de dados', async () => {
+      const sales = [
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 1,
+        quantity: 5
+    },
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 2,
+        quantity: 10
+    }
+];
+      before(async () => {
+        sinon.stub(salesModels, 'getSalesById').resolves(sales);
+      });
+
+      after(async () => {
+        salesModels.getSalesById.restore();
+      });
+
+      it('Testa se o retorno é um array', async () => {
+        const response = await salesServices.getSalesById(1);
+
+        expect(response).to.be.an('array');
+      });
+      it('Testa se o array retornado contém informações da sale buscada', async () => {
+        const response = await salesServices.getSalesById(1);
+
+        expect(response).to.be.equal(sales);
+      });
+    });
+
+    describe('Testa getSalesById se o id passado é uma venda inexistente', async () => {
+      const sales = [];
+
+      before(async () => {
+        sinon.stub(salesModels, 'getSalesById').resolves(sales);
+      });
+
+      after(async () => {
+        salesModels.getSalesById.restore();
+      });
+
+      it('Testa se um erro é disparado quando um id inválido é passado', async () => {
+        const response = await salesServices.getSalesById(50);
+
+        expect(response).to.be.an('object');
+      });
+      it('Testa se o erro contém a mensagem Product not found', async () => {
+        const response = await salesServices.getSalesById(50);
+
+        expect(response).to.be.deep.equal({ message: 'Sale not found' });
+      });
+    });
+  });
