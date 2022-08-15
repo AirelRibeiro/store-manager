@@ -47,6 +47,14 @@ const productsServices = {
 
     return deletedProduct;
   },
+
+  searchByName: async (name) => {
+    let products = await productsModels.searchByName(name);
+    if (products.length === 0) {
+      products = await productsModels.getAllProducts();
+    }
+    return products;
+  },
 };
 
 module.exports = productsServices;
