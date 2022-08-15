@@ -258,3 +258,141 @@ describe('Testa função deleteSale de salesServices', () => {
       });
     });
 });
+
+describe('Testa função updateSale de productsServices', () => {
+  describe('Testa se, quando um saleId válido é passado, retorna a sale atualizada', () => {
+    const sales = [
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 1,
+        quantity: 5
+    },
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 2,
+        quantity: 10
+    }
+    ];
+    
+    const salesToUpdate = [
+        {
+          "productId": 1,
+          "quantity": 1
+        },
+        {
+          "productId": 4,
+          "quantity": 5
+        },
+      ];
+
+    beforeEach(async () => {
+      sinon.stub(productsModels, 'getById').resolves([{ id: 1, name: 'Lævateinn' }]);
+      sinon.stub(salesModels, 'getSalesById').resolves(sales);
+      sinon.stub(salesModels, 'updateSale')
+        .onFirstCall().resolves(salesToUpdate[0])
+        .onSecondCall().resolves(salesToUpdate[1]);
+    });
+
+    afterEach(async () => {
+      productsModels.getById.restore();
+      salesModels.getSalesById.restore();
+      salesModels.updateSale.restore();
+    });
+
+    it('Testa se um objeto é retornado', async () => {
+      const response = await salesServices.updateSale(sales, 1);
+
+      expect(response).to.be.an('object');
+    });
+
+    it('Testa se o objeto contém informações do produto inserido', async () => {
+      const response = await salesServices.updateSale(sales, 1);
+
+      expect(response).to.be.deep.equal({ saleId: 1, itemsUpdated: salesToUpdate });
+    });
+  });
+      
+  describe('Testa se, quando um saleId inválido é passado, retorna um erro', () => {
+    const sales = [
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 1,
+        quantity: 5
+    },
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 2,
+        quantity: 10
+    }
+    ];
+
+    const errorMessage = { message: 'Sale not found' };
+
+    beforeEach(async () => {
+      sinon.stub(salesModels, 'updateSale').resolves(errorMessage);
+    });
+
+    afterEach(async () => {
+      salesModels.updateSale.restore();
+    });
+
+    it('Testa se um objeto é retornado', async () => {
+      const response = await salesServices.updateSale(sales, 50);
+
+      expect(response).to.be.an('object');
+    });
+
+    it('Testa se o objeto contém a mensagem de erro correta', async () => {
+      const response = await salesServices.updateSale(sales, 50);
+
+      expect(response).to.be.deep.equal({ message: 'Sale not found', code: 404 });
+    });
+  });
+
+  describe('Testa se, quando um productId inválido é passado, retorna um erro', () => {
+    const sales = [
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 50,
+        quantity: 5
+    },
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 60,
+        quantity: 10
+    }
+    ];
+
+    const errorMessage = { message: 'Product not found', code: 404 };
+
+    beforeEach(async () => {
+      sinon.stub(productsModels, 'getById')
+        .onFirstCall().resolves([])
+        .onSecondCall().resolves([]);
+      sinon.stub(salesModels, 'updateSale').resolves(errorMessage);
+    });
+
+    afterEach(async () => {
+      productsModels.getById.restore();
+      salesModels.updateSale.restore();
+    });
+
+    it('Testa se um objeto é retornado', async () => {
+      const response = await salesServices.updateSale(sales, 50);
+
+      expect(response).to.be.an('object');
+    });
+
+    it('Testa se o objeto contém a mensagem de erro correta', async () => {
+      const response = await salesServices.updateSale(sales, 50);
+
+      expect(response).to.be.deep.equal({ message: 'Product not found', code: 404 });
+    });
+  });
+});
