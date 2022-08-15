@@ -48,6 +48,13 @@ const salesModels = {
     'DELETE FROM StoreManager.sales WHERE id = ?;',
     [id],
   )).then(() => true),
+
+  updateSale: (productId, quantity, saleId) => connection.execute(
+    `UPDATE StoreManager.sales_products
+      SET product_id = ?, quantity = ?
+      WHERE sale_id = ? && product_id = ?;`,
+       [productId, quantity, saleId, productId],
+  ).then(() => ({ productId, quantity })),
 };
 
 module.exports = salesModels;
