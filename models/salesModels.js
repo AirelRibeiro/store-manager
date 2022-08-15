@@ -22,8 +22,7 @@ const salesModels = {
         ON sp.sale_id = s.id
         ORDER BY saleID, productId;
     `);
-    console.log('🚀 ~ file: salesModels.js ~ line 25 ~ getAllSales: ~ sales', sales);
-
+    
     return sales;
   },
 
@@ -41,6 +40,12 @@ const salesModels = {
     
     return sales;
   },
+
+  deleteSale: (id) => connection.execute(
+    `DELETE FROM StoreManager.sales
+      WHERE id = ?;`,
+    [id],
+  ).then(() => true),
 };
 
 module.exports = salesModels;
