@@ -43,7 +43,7 @@ const salesServices = {
       // throw new Error('Product not found');
       return { message: 'Sale not found' };
     }
-    const deletedSale = await productsModels.deleteProduct(id);
+    const deletedSale = await salesModels.deleteSale(id);
 
     return deletedSale;
   },
