@@ -119,30 +119,30 @@ describe('Testa função insertProduct de productsServices', () => {
 
 describe('Testa função updateProduct de productsServices', () => {
   describe('Testa se, quando um id válido é passado, retorna o produto inserido', () => {
-      const updatedProduct = { id: 1, name: 'Lævateinn' };
+    const updatedProduct = { id: 1, name: 'Lævateinn' };
 
-        before(async () => {
-        sinon.stub(productsModels, 'getById').resolves([{ id: 1, name: 'Lævateinn' }])
-        sinon.stub(productsModels, 'updateProduct').resolves(updatedProduct);
+    before(async () => {
+      sinon.stub(productsModels, 'getById').resolves([{ id: 1, name: 'Lævateinn' }])
+      sinon.stub(productsModels, 'updateProduct').resolves(updatedProduct);
     });
 
-        after(async () => {
-        productsModels.getById.restore();
-        productsModels.updateProduct.restore();
-      });
-
-      it('Testa se um objeto é retornado', async () => {
-        const response = await productsServices.updateProduct({ id: 1, name: 'Lævateinn' });
-
-        expect(response).to.be.an('object');
-      });
-
-      it('Testa se o objeto contém informações do produto inserido', async () => {
-        const response = await productsServices.updateProduct({ id: 1, name: 'Lævateinn' });
-
-        expect(response).to.be.deep.equal({ id: 1, name: 'Lævateinn' });
-      });
+    after(async () => {
+      productsModels.getById.restore();
+      productsModels.updateProduct.restore();
     });
+
+    it('Testa se um objeto é retornado', async () => {
+      const response = await productsServices.updateProduct({ id: 1, name: 'Lævateinn' });
+
+      expect(response).to.be.an('object');
+    });
+
+    it('Testa se o objeto contém informações do produto inserido', async () => {
+      const response = await productsServices.updateProduct({ id: 1, name: 'Lævateinn' });
+
+      expect(response).to.be.deep.equal({ id: 1, name: 'Lævateinn' });
+    });
+  });
       
   describe('Testa se, quando um id inválido é passado, retorna um erro', () => {
     const errorMessage = { message: 'Product not found' };
@@ -167,7 +167,7 @@ describe('Testa função updateProduct de productsServices', () => {
       expect(response).to.be.deep.equal({ message: 'Product not found' });
     });
   });
-  });
+});
 
 describe('Testa função deleteProduct de productsServices', () => {
     describe('Testa se, quando um id inválido é passado, retorna um erro', () => {
