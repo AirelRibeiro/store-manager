@@ -6,6 +6,8 @@ const salesRoutes = express.Router();
 
 salesRoutes.post('/', validationMiddlewares.salesValidations, salesControllers.insertSales);
 
+salesRoutes.get('/:id', salesControllers.getSaleById);
+
 salesRoutes.get('/', salesControllers.getAllSales);
 
 module.exports = salesRoutes;
