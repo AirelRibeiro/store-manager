@@ -197,4 +197,64 @@ describe('Testa getSalesById de salesServices', () => {
         expect(response).to.be.deep.equal({ message: 'Sale not found' });
       });
     });
-  });
+});
+  
+describe('Testa função deleteSale de salesServices', () => {
+    describe('Testa se, quando um id inválido é passado, retorna um erro', () => {
+      const errorMessage = { message: 'Sale not found' };
+
+      before(async () => {
+        sinon.stub(salesModels, 'getSalesById').resolves([]);
+        sinon.stub(productsModels, 'deleteSale').resolves(errorMessage);
+    });
+
+      after(async () => {
+        salesModels.getSalesById.restore();
+        productsModels.deleteSale.restore();
+      });
+
+      it('Testa se um objeto é retornado', async () => {
+        const response = await salesServices.deleteSale('50');
+
+        expect(response).to.be.an('object');
+      });
+
+      it('Testa se o objeto contém a mensagem de erro correta', async () => {
+        const response = await salesServices.deleteSale('50');
+
+        expect(response).to.be.deep.equal({ message: 'Sale not found' });
+      });
+    });
+
+  describe('Testa se, quando um id válido é passado o retorno é correto', () => {
+      const sales = [
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 1,
+        quantity: 5
+    },
+    {
+        saleID: 1,
+        date: '2022-08-15T19:08:32.000Z',
+        productId: 2,
+        quantity: 10
+    }
+];
+      before(async () => {
+        sinon.stub(salesModels, 'getSalesById').resolves(sales);
+        sinon.stub(salesModels, 'deleteSale').resolves(true);
+    });
+
+      after(async () => {
+        salesModels.getSalesById.restore();
+        salesModels.deleteSale.restore();
+      });
+
+      it('Testa se um true é retornado', async () => {
+        const response = await salesServices.deleteSale('1');
+
+        expect(response).to.be.true;
+      });
+    });
+});
