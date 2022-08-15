@@ -338,3 +338,107 @@ describe('Testa deleteSale de salesControllers', () => {
       });
     });
   });
+
+
+describe('Testa updateSale de salesControllers', () => {
+  describe('Testa updateSale quando um id válido é passado', () => {
+    const salesToUpdate = [
+        {
+          "productId": 1,
+          "quantity": 1
+        },
+        {
+          "productId": 4,
+          "quantity": 5
+        },
+      ];
+
+    before(async () => {
+      sinon.stub(salesServices, 'updateSale').resolves({ saleId: 1, itemsUpdated: salesToUpdate });
+    });
+
+    after(async () => {
+      salesServices.updateSale.restore();
+    });
+    
+    it('Testa se o status de retorno é 200', async () => {
+      const req = {};
+      const res = {};
+
+      req.body = salesToUpdate;
+      req.params = { id: '1' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesControllers.updateSale(req, res);
+
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Testa se o o json é chamado com o produto inserido', async () => {
+      const req = {};
+      const res = {};
+      
+      req.body = salesToUpdate;
+      req.params = { id: '1' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesControllers.updateSale(req, res);
+
+      expect(res.json.calledWith({ saleId: 1, itemsUpdated: salesToUpdate })).to.be.true;
+    });
+  });
+
+  describe('Testa updateSale quando um saleId inválido é passado', () => {
+    const errorMessage = { message: 'Sale not found', code: 404 };
+
+    before(async () => {
+      sinon.stub(salesServices, 'updateSale').resolves(errorMessage);
+    });
+
+    after(async () => {
+      salesServices.updateSale.restore();
+    });
+    
+    it('Testa se o status de retorno é 404', async () => {
+      const req = {};
+      const res = {};
+      const next = (err) => {
+        if (err.message) {
+          return res.status(err.code).json({ message: err.message });
+        }
+        return res.status(500).json({ message: 'Erro no servidor' });
+      }
+
+      req.body = [];
+      req.params = { id: '50' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesControllers.updateSale(req, res, next);
+
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Testa se o o json é chamado com o produto inserido', async () => {
+      const req = {};
+      const res = {};
+      const next = (err) => {
+        if (err.message) {
+          return res.status(err.code).json({ message: err.message });
+        }
+        return res.status(500).json({ message: 'Erro no servidor' });
+      }
+      
+      req.body = [];
+      req.params = { id: '50' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesControllers.updateSale(req, res, next);
+
+      expect(res.json.calledWith({ message: 'Sale not found' })).to.be.true;
+    });
+  });
+});
