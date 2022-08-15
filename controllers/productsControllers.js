@@ -49,6 +49,12 @@ const productsControllers = {
 
     return res.status(204).end();
   },
+
+  searchByName: async (req, res) => {
+    const { q } = req.query;
+    const products = await productsServices.searchByName(q);
+    return res.status(200).json(products);
+  },
 };
 
 module.exports = productsControllers;
