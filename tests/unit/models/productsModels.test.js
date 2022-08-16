@@ -132,18 +132,70 @@ describe('Testa o funcionamento dos productsModels', () => {
   });
 
   describe('Testa deleteProduct que exclui produto no banco de dados', () => {
-      before(async () => {
-        sinon.stub(connection, 'execute').resolves(true);
+    before(async () => {
+      sinon.stub(connection, 'execute').resolves(true);
     });
+
+    after(async () => {
+      connection.execute.restore();
+    });
+    
+    it('Testa se o retorno é um boolean', async () => {
+      const response = await productsModels.deleteProduct('1', 'Lævateinn');
+
+      expect(response).to.be.true;
+    });
+  });
+
+  describe('Testa função searchByName', () => {
+    describe('Testa a função quando o name passado existe no banco de dados', () => {
+      const productsWithMartelo = [[
+        { id: 1, name: 'Martelo de Thor' }
+      ]];
+
+      before(async () => {
+        sinon.stub(connection, 'execute').resolves(productsWithMartelo);
+      });
 
       after(async () => {
         connection.execute.restore();
       });
     
-    it('Testa se o retorno é um boolean', async () => {
-      const response = await productsModels.deleteProduct('1', 'Lævateinn');
+      it('Testa se o retorno é um array', async () => {
+        const response = await productsModels.searchByName('Martelo');
 
-        expect(response).to.be.true;
+        expect(response).to.be.an('array');
+      });
+
+      it('Testa se o array possui um objeto com as informações corretas', async () => {
+        const response = await productsModels.searchByName('Martelo');
+
+        expect(response).to.be.deep.equal([
+          { id: 1, name: 'Martelo de Thor' }
+        ]);
+      });
+    });
+    
+    describe('Testa a função quando o name passado não existe no banco de dados', () => {
+      before(async () => {
+        sinon.stub(connection, 'execute').resolves([[]]);
+      });
+
+      after(async () => {
+        connection.execute.restore();
+      });
+    
+      it('Testa se o retorno é um array', async () => {
+        const response = await productsModels.searchByName('Espada');
+
+        expect(response).to.be.an('array');
+      });
+
+      it('Testa se o array possui um objeto com as informações corretas', async () => {
+        const response = await productsModels.searchByName('Espada');
+
+        expect(response).to.be.deep.equal([]);
+      });
     });
   });
 });
