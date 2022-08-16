@@ -211,4 +211,50 @@ describe('Testa função deleteProduct de productsServices', () => {
         expect(response).to.be.true;
       });
     });
+});
+  
+describe('Testa searchByName de productsServices', () => {
+  describe('Testa retorno caso seja passado um name válido', () => {
+    const productsWithMartelo = [
+      { id: 1, name: 'Martelo de Thor' }
+    ];
+
+    before(async () => {
+      sinon.stub(productsModels, 'searchByName').resolves(productsWithMartelo);
+    });
+
+    after(async () => {
+      productsModels.searchByName.restore();
+    });
+
+    it('Testa se retorno é um array contendo produtos escritos Martelo', async () => {
+      const response = await productsServices.searchByName('Martelo');
+
+      expect(response).to.be.equal(productsWithMartelo);
+    });
   });
+
+  describe('Testa retorno caso nenhum produto com aquele nome exista', () => {
+    const allProducts = [
+        { id: 1, name: 'Martelo de Thor' },
+        { id: 2, name: 'Traje de encolhimento' },
+        { id: 3, name: 'Escudo do Capitão América' },
+      ];
+
+      before(async () => {
+        sinon.stub(productsModels, 'searchByName').resolves([]);
+        sinon.stub(productsModels, 'getAllProducts').resolves(allProducts);
+      });
+
+      after(async () => {
+        productsModels.searchByName.restore();
+        productsModels.getAllProducts.restore();
+      });
+    
+    it('Testa se o o json é chamado com um array contendo todos os produtos', async () => {
+      const response = await productsServices.searchByName('Espada');
+
+      expect(response).to.be.equal(allProducts);
+    });
+  });
+});
