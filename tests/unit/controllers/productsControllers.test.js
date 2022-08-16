@@ -343,3 +343,87 @@ describe('Testa deleteProduct de productsControllers', () => {
     });
   });
 });
+
+describe('Testa searchByName', () => {
+  describe('Testa retorno caso seja passado um name válido', () => {
+    const productsWithMartelo = [
+      { id: 1, name: 'Martelo de Thor' }
+    ];
+
+    before(async () => {
+      sinon.stub(productsServices, 'searchByName').resolves(productsWithMartelo);
+    });
+
+    after(async () => {
+      productsServices.searchByName.restore();
+    });
+    
+    it('Testa se o status de retorno é 200', async () => {
+      const req = {};
+      const res = {}
+
+      req.query = { q: 'Martelo' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsControllers.searchByName(req, res);
+
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Testa se o o json é chamado com um array contendo todos os produtos', async () => {
+      const req = {};
+      const res = {}
+
+      req.query = { q: 'Martelo' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsControllers.searchByName(req, res);
+
+      expect(res.json.calledWith(productsWithMartelo)).to.be.true;
+    });
+  });
+
+  describe('Testa retorno caso nenhum produto com aquele nome exista', () => {
+    const allProducts = [
+        { id: 1, name: 'Martelo de Thor' },
+        { id: 2, name: 'Traje de encolhimento' },
+        { id: 3, name: 'Escudo do Capitão América' },
+      ];
+
+      before(async () => {
+        sinon.stub(productsServices, 'searchByName').resolves(allProducts);
+      });
+
+      after(async () => {
+        productsServices.searchByName.restore();
+      });
+    
+    it('Testa se o status de retorno é 200', async () => {
+      const req = {};
+      const res = {}
+
+      req.query = { q: 'Espada' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsControllers.searchByName(req, res);
+
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Testa se o o json é chamado com um array contendo todos os produtos', async () => {
+      const req = {};
+      const res = {}
+
+      req.query = { q: 'Espada' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsControllers.searchByName(req, res);
+
+      expect(res.json.calledWith(allProducts)).to.be.true;
+    });
+  });
+});
