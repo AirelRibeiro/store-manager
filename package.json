@@ -13,7 +13,7 @@
     "start": "node index.js",
     "debug": "nodemon --ignore coverage index.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx",
-    "migration": "node -e \"require('./__tests__/_utils').runMigration()\"",
+    "migration": "node -e \"require('./migration.sql').runMigration()\"",
     "seed": "node -e \"require('./__tests__/_utils').runSeed()\""
   },
   "repository": {
@@ -33,7 +33,8 @@
     "express": "^4.17.1",
     "express-rescue": "^1.1.26",
     "joi": "^17.6.0",
-    "mysql2": "^2.3.0"
+    "mysql2": "^2.3.0",
+    "swagger-ui-express": "^4.5.0"
   },
   "devDependencies": {
     "chai": "^4.3.4",
