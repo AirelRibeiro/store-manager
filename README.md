@@ -24,12 +24,13 @@ Para TDD (Desenvolvimento Orientado a Testes), o teste de cada camada da arquite
 - Por último foi implementada a camada **Controller**, que é responsável pelo contato direto com o Cliente. Os testes foram escritos, falharam; o Controller foi construído e os testes passados.
 
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" height="50" alt="Docker_logo"  />
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" height="45" alt="Mysql_logo"  />
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" height="45" alt="NodeJs_logo"  />
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" height="45" alt="Express_logo"  />
 <img src="https://seeklogo.com/images/P/postman-logo-F43375A2EB-seeklogo.com.png" height="45" alt="Postman_logo"  />
 <img src="https://seeklogo.com/images/S/swagger-logo-A49F73BAF4-seeklogo.com.png" height="45" alt="Swagger_logo"  />
 
-O projeto foi executado em um ambiente isolado, utilizando **Docker**; a execução de códigos JavaScript fora do browser foi feita com **Node.js**; as requisições com diferentes verbos HTTP e diferentes endpoints foram estruturadas com o **Express**. A verificação das solicitações HTTP e leitura de suas respostas foi feita utilizando **Postman**; enquanto a construção da documentação da API foi feita com o **Swagger**.
+O projeto foi executado em um ambiente isolado, utilizando **Docker** e o banco de dados gerenciado com **My SQL**. A execução dos códigos JavaScript fora do browser foi feita com **Node.js**; as requisições com diferentes verbos HTTP e diferentes endpoints foram estruturadas com o **Express**. A verificação das solicitações HTTP e leitura de suas respostas foi feita utilizando **Postman**; enquanto a construção da documentação da API foi feita com o **Swagger**.
 </div>
 
 ## Consultando a documentação por meio do **Postman**:
