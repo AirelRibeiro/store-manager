@@ -1,0 +1,613 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Store Manager",
+    "description": "Store Manager é uma API RESTful simula um sistema de gerenciamento de vendas no formato dropshipping onde é possível criar, ler, deletar e atualizar (CRUD) produtos e vendas.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/sales/": {
+      "post": {
+        "summary": "Inclusão de venda no banco de dados",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "productId": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Quando a venda é inserida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 5
+                    },
+                    "itemsSold": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "productId": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "quantity": {
+                            "type": "integer",
+                            "example": 15
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Retorno se algum dos campos do requeridos no body não forem informados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Retorno se a quantidade informada for menor que 1",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Retorno o produto não existir no banco de dados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Retorno ao buscar todas as vendas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Um array com objetos contendo informações sobre todas as vendas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "saleId": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "date": {
+                        "type": "string",
+                        "example": "2020-09-09T07:22:29.000Z"
+                      },
+                      "productId": {
+                        "type": "integer",
+                        "example": 2
+                      },
+                      "quantity": {
+                        "type": "integer",
+                        "example": 5
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sales/{id}": {
+      "get": {
+        "summary": "Pesquisa uma venda específica, por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da venda pesquisada",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+            
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Um array com objetos contendo detalhes da venda buscada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "example": "2020-09-09T07:22:29.000Z"
+                      },
+                      "productId": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "quantity": {
+                        "type": "integer",
+                        "example": 5
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Retorno se a venda não existir",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualização de uma venda especificada por Id",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "productId": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da venda para atualização",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Um array com objetos contendo detalhes da venda atualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "saleId": {
+                      "type": "integer",
+                      "example": "2"
+                    },
+                    "itemsUpdated": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "productId": {
+                            "type": "integer",
+                            "example": 2
+                          },
+                          "quantity": {
+                            "type": "integer",
+                            "example": 5
+                          }
+                        }
+                      }
+                    }
+                  }
+                  
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Retorno se a venda não existir",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui venda de acordo com Id do parâmetro da requisição",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da venda para exclusão",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Venda excluída com sucesso"
+          },
+          "404": {
+            "description": "Retorno se a venda não existir",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/": {
+      "post": {
+        "summary": "Insere um produto no banco de dados",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Lævateinn"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Retorno quando o produto é inserido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 5
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Lævateinn"
+                    }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+      "get": {
+        "summary": "Buscar por todos os produtos",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Um array com objetos contendo detalhes de todos os produtos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 5
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Lævateinn"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+  },
+  "/products/search": {
+    "get": {
+      "summary": "Busca de produto por strig com nome",
+      "parameters": [
+        {
+          "name": "q",
+          "in": "query",
+          "description": "String com nome do produto buscado",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Um array com objetos contendo informações sobre produtos cujo nome contenha aquela string",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 5
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Lævateinn"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/products/{id}": {
+    "get": {
+      "summary": "Pesquisa uma produto específico, por Id",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Id do produto pesquisado",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Objeto contendo informações sobre o produto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Lævateinn"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Retorno o produto não existir no banco de dados",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "summary": "Atualização de um produto especificado por Id",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Id do produto para ser atualizado",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Objeto contendo informações sobre do produto atualizado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 5
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Lævateinn"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Retorno o produto não existir no banco de dados",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "summary": "Exclui produto de acordo com Id do parâmetro da requisição",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Id do produto para exclusão",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "O produto foi excluído com sucesso"
+        },
+        "404": {
+          "description": "Retorno o produto não existir no banco de dados",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  }
+}
