@@ -37,7 +37,7 @@ O projeto foi executado em um ambiente isolado, utilizando **Docker** e o banco 
 
 Clique e escolha entre **Fork collection** ou **View collection**
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/22527230-b2a8b769-ea7f-4781-aea9-3bdb07dccf5b?action=collection%2Ffork&collection-url=entityId%3D22527230-b2a8b769-ea7f-4781-aea9-3bdb07dccf5b%26entityType%3Dcollection%26workspaceId%3D96ac246a-1dbc-4ade-b163-f9434c83ec74)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/22527230-b2a8b769-ea7f-4781-aea9-3bdb07dccf5b?action=collection%2Ffork&collection-url=entityId%3D22527230-b2a8b769-ea7f-4781-aea9-3bdb07dccf5b%26entityType%3Dcollection%26workspaceId%3Dd420281c-c6ee-4fd5-bfa9-080198455738)
 
 ## Rodando o projeto na sua máquina:
 
